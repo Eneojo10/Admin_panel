@@ -33,7 +33,7 @@ function Category() {
 
       setCategory("");
 
-      toast.success("Category added successfully");
+      toast.success("Category added successfully...");
     } catch (error) {
       console.error("Error adding new category:", error);
       toast.error("Failed to add category. Please try again.");
