@@ -1,0 +1,172 @@
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  box-sizing: border-box;
+}
+.side-bar {
+  background-color: #0e1935;
+  width: 20%;
+  height: 910px;
+  position: fixed;
+}
+.himma-image {
+  width: 35%;
+}
+.himma-image img {
+  width: 100%;
+  padding: 15px;
+}
+.border-line {
+  border: 1px solid white;
+  margin-top: -11px;
+}
+.board-flex {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+}
+.board-flex1 {
+  display: flex;
+  justify-content: space-between;
+  width: 45%;
+}
+.board-flex2 {
+  display: flex;
+  justify-content: space-between;
+  width: 45%;
+}
+.board-flex3 {
+  display: flex;
+  justify-content: space-between;
+  width: 57%;
+}
+.d-board h4 {
+  margin-top: 22px;
+}
+.main {
+  width: 87%;
+  margin: auto;
+  padding-top: 25px;
+}
+.d-board h4 {
+  color: white;
+}
+.dash-icon {
+  margin-top: 22px;
+  color: green;
+}
+.naviation-bar {
+  background-color: #f7f7f7;
+  height: 70px;
+  width: 100%;
+}
+.dash_board {
+  display: flex;
+}
+.dash-sidenav {
+  width: 20%;
+}
+.dash-navbar {
+  width: 80%;
+}
+.nav-details {
+  color: green;
+  padding-top: 25px;
+}
+.link-line {
+  text-decoration: none;
+}
+/* @keyframes slide {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+} */
+.category-inputfield input {
+  width: 100%;
+  height: 45px;
+  outline: none;
+}
+.category-inputfield{
+  width: 40%;
+  margin: auto;
+  margin-top: 150px;
+}
+.category-button{
+  width: 15%;
+  margin: auto;
+  margin-top: 10px;
+}
+.cat-btn{
+  background: transparent;
+  outline: none;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  background-color: green;
+  font-size: 16px;
+  font-weight: 600;
+}
+.presenter-section{
+  width: 50%;
+  margin: auto;
+  margin-top: 50px;
+}
+.presenter-section input{
+  width: 100%;
+  height: 35px;
+  outline: none;
+}
+.presenter-section select{
+  width: 100%;
+  height: 35px;
+  outline: none;
+}
+.presenter-section textarea{
+  width: 100%;
+  height: 150px;
+  outline: none;
+}
+.presenter-btn{
+  outline: none;
+  border: none;
+  background: transparent;
+  padding: 10px 20px;
+  background-color: green;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+}
+.schedule-btn{
+  outline: none;
+  background: transparent;
+  border: none;
+  background-color: green;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+}
+.presentrs-list{
+  width: 90%;
+  margin: auto;
+}
+.presenter-one{
+  width: 25%;
+  margin-top: 20px;
+}
+.presenter-one img{
+  width: 100%;
+}
+.presenter-button{
+  background: transparent;
+  border: none;
+  background-color: green;
+  cursor: pointer;
+  color: white;
+  padding: 15px 20px;
+  font-weight: 800;
+}
