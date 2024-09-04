@@ -47,7 +47,7 @@ function Informations() {
       formPayload.append('author', formData.author);
       formPayload.append('youtubeLink', formData.youtubeLink);
       formPayload.append('avatar', formData.avatar);
-      formPayload.append('categoryId', selectedCategory); 
+      formPayload.append('category_id', selectedCategory); 
   
       console.log('Form Data:');
       [...formPayload.entries()].forEach(([key, value]) => {
@@ -86,6 +86,7 @@ function Informations() {
       alert('Failed to save data. Please check the console for details.');
     }
   };
+  
   
 
 
