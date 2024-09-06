@@ -1,29 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import Sidenav from '../Navigations/Sidenav';
-import Navbar from '../Navigations/Navbar';
-import axios from 'axios';
-import { BASE_URL } from '../../../utils/globals';
+import React, { useState, useEffect } from "react";
+import Sidenav from "../Navigations/Sidenav";
+import Navbar from "../Navigations/Navbar";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL } from "../../../utils/globals";
 
 function Schedule() {
   const [schedule, setSchedule] = useState({
-    title: '',
+    title: "",
     status: false,
-    duration: '',
-    start_time: '',
-    end_time: '',
-    date: '',
+    duration: "",
+    start_time: "",
+    end_time: "",
+    date: "",
   });
 
   useEffect(() => {
     const now = new Date();
-    const formattedDate = now.toISOString().split('T')[0]; 
-    const formattedStartTime = now.toTimeString().split(' ')[0]; 
+    const formattedDate = now.toISOString().split("T")[0];
+    const formattedStartTime = now.toTimeString().split(" ")[0];
 
-    setSchedule(prevSchedule => ({
+    const savedScheduleId = localStorage.getItem("scheduleId");
+
+    setSchedule((prevSchedule) => ({
       ...prevSchedule,
       start_time: formattedStartTime,
       end_time: formattedStartTime,
       date: formattedDate,
+      _id: savedScheduleId || "",
     }));
   }, []);
 
@@ -31,59 +36,83 @@ function Schedule() {
     setSchedule({ ...schedule, [e.target.name]: e.target.value });
   };
 
-  const handleCheckboxChange = async () => {
-    try {
-      setSchedule(prevSchedule => ({ ...prevSchedule, status: !prevSchedule.status }));
-      
-      await axios.put(`${BASE_URL}/schedules/${schedule._id}/change-status`, {
-        status: !schedule.status,
-      });
-
-    } catch (error) {
-      console.error('Error updating schedule status:', error);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${BASE_URL}/schedules`, schedule);
+      const { title, duration, start_time, end_time, date } = schedule;
 
-      setSchedule(prevSchedule => ({ ...prevSchedule, _id: response.data._id }));
+      
+      const newSchedule = { title, duration, start_time, end_time, date };
 
-      alert('Schedule added successfully');
+      const response = await axios.post(`${BASE_URL}/schedules`, newSchedule); 
+      console.log(response);
 
-      setSchedule({
-        title: '',
-        status: false,
-        duration: '',
-        start_time: '',
-        end_time: '',
-        date: '',
-      });
+      
+      setSchedule((prevSchedule) => ({
+        ...prevSchedule,
+        _id: response.data.schedule._id, 
+      }));
+
+      localStorage.setItem("scheduleId", response.data.schedule._id);
+
+      toast.success("Schedule added successfully!");
     } catch (error) {
-      console.error('Error adding new schedule:', error);
-      alert('Failed to add schedule. Please try again');
+      console.error("Error adding new schedule:", error);
+      toast.error("Failed to add schedule. Please try again.");
     }
   };
 
+  const handleCheckboxChange = async () => {
+    const savedScheduleId = schedule._id || localStorage.getItem("scheduleId");
+  
+    if (!savedScheduleId) {
+      toast.error("Schedule ID is undefined. Please create the schedule first.");
+      return;
+    }
+  
+    try {
+      
+      const newStatus = !schedule.status;
+  
+      
+      setSchedule((prevSchedule) => ({
+        ...prevSchedule,
+        status: newStatus,
+      }));
+  
+      
+      await axios.put(`${BASE_URL}/schedules/${savedScheduleId}/change-status`, {
+        status: newStatus,  
+      });
+  
+      
+      toast.success("Schedule status updated successfully!");
+    } catch (error) {
+      console.error("Error updating schedule status:", error);
+  
+      
+      toast.error("Failed to update schedule status.");
+    }
+  };
+  
+
   return (
     <div>
-      <div className='dash_board'>
-        <div className='dash-sidenav'>
+      <div className="dash_board">
+        <div className="dash-sidenav">
           <Sidenav />
         </div>
 
-        <div className='dash-navbar'>
+        <div className="dash-navbar">
           <Navbar />
-          <div className='presenter-section'>
+          <div className="presenter-section">
             <form onSubmit={handleSubmit}>
               <label>
                 Title:
                 <input
-                  type='text'
-                  name='title'
+                  type="text"
+                  name="title"
                   value={schedule.title}
                   onChange={handleChange}
                   required
@@ -94,8 +123,8 @@ function Schedule() {
               <label>
                 Duration:
                 <input
-                  type='text'
-                  name='duration'
+                  type="text"
+                  name="duration"
                   value={schedule.duration}
                   onChange={handleChange}
                 />
@@ -105,8 +134,8 @@ function Schedule() {
               <label>
                 Start Time:
                 <input
-                  type='text'
-                  name='start_time'
+                  type="text"
+                  name="start_time"
                   value={schedule.start_time}
                   onChange={handleChange}
                 />
@@ -116,8 +145,8 @@ function Schedule() {
               <label>
                 End Time:
                 <input
-                  type='text'
-                  name='end_time'
+                  type="text"
+                  name="end_time"
                   value={schedule.end_time}
                   onChange={handleChange}
                 />
@@ -127,8 +156,8 @@ function Schedule() {
               <label>
                 Date:
                 <input
-                  type='text'
-                  name='date'
+                  type="text"
+                  name="date"
                   value={schedule.date}
                   onChange={handleChange}
                 />
@@ -139,21 +168,23 @@ function Schedule() {
                 <label>
                   Status:
                   <input
-                    type='checkbox'
-                    name='status'
+                    type="checkbox"
+                    name="status"
                     checked={schedule.status}
                     onChange={handleCheckboxChange}
                   />
                 </label>
                 <br />
               </div>
-              <button className='schedule-btn' type='submit'>
+              <button className="schedule-btn" type="submit">
                 Add Schedule
               </button>
             </form>
           </div>
         </div>
       </div>
+
+      <ToastContainer />
     </div>
   );
 }
