@@ -85,6 +85,12 @@ function Schedule() {
       await axios.put(`${BASE_URL}/schedules/${savedScheduleId}/change-status`, {
         status: newStatus,  
       });
+
+      setSchedule({
+        title: "",
+        duration: "",
+        status: false,  
+      });
   
       
       toast.success("Schedule status updated successfully!");
