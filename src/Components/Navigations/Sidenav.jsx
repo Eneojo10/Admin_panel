@@ -1,5 +1,5 @@
 import React from 'react';
-import image from '../Images/himmarebrandlogo-removebg-preview.png';
+import image from '../Images/Himma-image.png';
 import { RxDashboard } from 'react-icons/rx';
 import { MdOutlineSchedule } from 'react-icons/md';
 import { MdOutlineCategory } from 'react-icons/md';

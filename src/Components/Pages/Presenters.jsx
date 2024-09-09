@@ -7,13 +7,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Presenters() {
-  const [presenter, setPresenter] = useState([]);
+  const [presenters, setPresenters] = useState([]);
   const [formData, setFormData] = useState({
     fullname: "",
     nickname: "",
     bio: "",
     avatar: null,
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingPresenterId, setEditingPresenterId] = useState(null);
 
   const handleChange = (e) => {
     if (e.target.name === "avatar") {
@@ -24,64 +26,87 @@ function Presenters() {
   };
 
   useEffect(() => {
-    const fetchPresenter = async () => {
+    const fetchPresenters = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/presenters`);
-        setPresenter(response.data);
+        setPresenters(response.data);
       } catch (error) {
         toast.error("Error fetching presenters");
         console.error("Error fetching presenters:", error);
       }
     };
 
-    fetchPresenter();
+    fetchPresenters();
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const form = new FormData();
-      form.append("fullname", formData.fullname);
-      form.append("nickname", formData.nickname);
-      form.append("bio", formData.bio);
+    const form = new FormData();
+    form.append("fullname", formData.fullname);
+    form.append("nickname", formData.nickname);
+    form.append("bio", formData.bio);
+  
+    if (formData.avatar) {
       form.append("avatar", formData.avatar);
-
-      await axios.post(`${BASE_URL}/presenters`, form);
-
-      toast.success("Presenter added successfully");
-
+    }
+  
+    try {
+      if (isEditing) {
+        console.log("Editing presenter with ID:", editingPresenterId); // Add this line
+  
+        if (!editingPresenterId) {
+          toast.error("Presenter ID is missing");
+          return;
+        }
+  
+        await axios.put(`${BASE_URL}/presenters/${editingPresenterId}`, form);
+        toast.success("Presenter updated successfully");
+      } else {
+        await axios.post(`${BASE_URL}/presenters`, form);
+        toast.success("Presenter added successfully");
+      }
+  
       setFormData({
         fullname: "",
         nickname: "",
         bio: "",
         avatar: null,
       });
+      setIsEditing(false);
+      setEditingPresenterId(null);
+  
+      const response = await axios.get(`${BASE_URL}/presenters`);
+      setPresenters(response.data);
     } catch (error) {
-      toast.error("Failed to add presenter. Please try again");
-      console.error("Error adding new presenter:", error);
+      toast.error(
+        isEditing
+          ? "Failed to update presenter. Please try again"
+          : "Failed to add presenter. Please try again"
+      );
+      console.error(
+        isEditing
+          ? "Error updating presenter:"
+          : "Error adding new presenter:",
+        error
+      );
     }
   };
+  
 
-  const handleDeletePresenter = async (presenterId) => {
-    try {
-      const response = await axios.delete(`${BASE_URL}/presenters/${presenterId}`);
-
-      if (response.status === 200) {
-        toast.success("Presenter deleted successfully");
-
-        const updatedPresenters = presenter.filter(
-          (item) => item.id !== presenterId
-        );
-        setPresenter(updatedPresenters);
-      } else {
-        toast.error("Failed to delete presenter. Please try again");
-      }
-    } catch (error) {
-      toast.error("Failed to delete presenter. Please try again");
-      console.error("Error deleting presenter:", error);
-    }
+  const handleEditPresenter = (presenter) => {
+    console.log("Editing presenter:", presenter);
+    setIsEditing(true);
+    setEditingPresenterId(presenter._id);
+  
+    setFormData({
+      fullname: presenter.fullname,
+      nickname: presenter.nickname,
+      bio: presenter.bio,
+      avatar: null,
+    });
   };
+  
+  
 
   return (
     <div>
@@ -141,16 +166,16 @@ function Presenters() {
               <br />
 
               <button className="presenter-btn" type="submit">
-                Add Presenter
+                {isEditing ? "Update Presenter" : "Add Presenter"}
               </button>
             </form>
           </div>
 
-          <div className="presentrs-list">
+          <div className="presenters-list">
             <div className="presenters-imageholder">
-              {presenter &&
-                presenter.map((item) => (
-                  <div className="presenter-one" key={item.id}>
+              {presenters &&
+                presenters.map((item) => (
+                  <div className="presenter-one" key={item._id}>
                     <div className="presenter-border">
                       <div className="pr-bgclr">
                         <div className="presenter-img">
@@ -165,7 +190,7 @@ function Presenters() {
                     <div>
                       <button
                         className="presenter-button"
-                        
+                        onClick={() => handleEditPresenter(item)}
                       >
                         Edit
                       </button>
@@ -177,7 +202,6 @@ function Presenters() {
         </div>
       </div>
 
-      {/* Toast Container to display notifications */}
       <ToastContainer />
     </div>
   );

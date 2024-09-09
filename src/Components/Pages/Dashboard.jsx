@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidenav from '../Navigations/Sidenav';
 import Navbar from '../Navigations/Navbar';
-import image from '../Images/himmarebrandlogo-removebg-preview.png';
+// import image from '../Images/himmarebrandlogo-removebg-preview.png';
 
 function Dashboard() {
   return (

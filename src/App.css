@@ -51,6 +51,7 @@
 }
 .d-board h4 {
   color: white;
+  font-size: 18px;
 }
 .dash-icon {
   margin-top: 22px;
@@ -184,6 +185,10 @@
   border: 1px solid rgb(155, 146, 146);
   height: 300px;
   width: 100%;
+}
+.presenters-list{
+  width: 95%;
+  margin: auto;
 }
 .pr-bgclr{
   background-color: #0099cc;
