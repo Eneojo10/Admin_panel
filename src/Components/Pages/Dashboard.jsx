@@ -13,6 +13,10 @@ function Dashboard() {
 
         <div className='dash-navbar'>
           <Navbar/>
+
+          <div className='welcome-page'>
+            <h1>WELCOME TO HIMMA RADIO</h1>
+          </div>
         </div>
       </div>
     </div>
