@@ -138,7 +138,7 @@ function Schedule() {
               <br />
               <br />
               <label>
-                Start Time:
+                Time:
                 <input
                   type="text"
                   name="start_time"
@@ -148,7 +148,7 @@ function Schedule() {
               </label>
               <br />
               <br />
-              <label>
+              {/* <label>
                 End Time:
                 <input
                   type="text"
@@ -158,7 +158,7 @@ function Schedule() {
                 />
               </label>
               <br />
-              <br />
+              <br /> */}
               <label>
                 Date:
                 <input
